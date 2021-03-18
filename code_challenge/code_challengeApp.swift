@@ -11,7 +11,7 @@ import SwiftUI
 struct code_challengeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DashboardView()
         }
     }
 }

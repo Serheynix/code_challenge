@@ -1,0 +1,10 @@
+lib
+build
+Pods
+Podfile.lock
+*.xcworkspace
+*.xcodeproj
+# non-ignore project database
+!code_challenge.xcodeproj/project.pbxproj
+*~
+.DS_Store
