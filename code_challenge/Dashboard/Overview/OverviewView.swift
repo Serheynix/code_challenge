@@ -48,54 +48,47 @@ struct OverviewView: View {
                         Spacer()
                     }.padding(.vertical, 25)
                     
-                    PagesContainer(contentCount: 3) {
-                        
-                        // todo: this for test
-                        if (presenter.isLoadingData) {
-                            Text(presenter.allAccounts.cards[0].name)
-                        }
-                        
-                        CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: 705, spent: 300, income: 1005)
-                        .background(LinearGradient(gradient: Gradient(colors: [Color("AllCardsSecondary"), Color("AllCardsPrimary")]), startPoint: .leading, endPoint: .trailing))
-                        .cornerRadius(25).shadow(color: Color("CardShadow"), radius: 15)
-                        .gesture(
-                            TapGesture().onEnded { _ in
-                                shoosedCard = "All accounts"
-                                withAnimation(.easeInOut(duration: 1)) {
-                                    self.showDetail.toggle()
-                                }
+                    if (presenter.isLoadingData) {
+                    
+                        PagesContainer(contentCount: presenter.allAccounts.cards.count + 1) {
+                            // All accounts
+                            if let totalBalance = presenter.allAccounts.totalBalance {
+                                CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: totalBalance.balance, spent: totalBalance.bills, income: totalBalance.cash)
+                                .background(LinearGradient(gradient: Gradient(colors: [Color("AllCardsSecondary"), Color("AllCardsPrimary")]), startPoint: .leading, endPoint: .trailing))
+                                .cornerRadius(25).shadow(color: Color("CardShadow"), radius: 15)
+                                .gesture(
+                                    TapGesture().onEnded { _ in
+                                        shoosedCard = "All accounts"
+                                        withAnimation(.easeInOut(duration: 1)) {
+                                            self.showDetail.toggle()
+                                        }
+                                    }
+                                )
                             }
-                        )
-                        
-                        CardView(style: .light, name: "Westpac", balanceText: "Avaible balance", icon: "ic_westpac", timeLeft: 5*3600, balance: 295, spent: 605, income: 900, onUpdate: {
-                            print("Westpac update clicked")
-                        })
-                        .background(LinearGradient(gradient: Gradient(colors: [Color("CardSecondary"), Color("CardPrimary")]), startPoint: .leading, endPoint: .trailing))
-                        .cornerRadius(25).shadow(color: Color("CardShadow"), radius: 15)
-                        .gesture(
-                            TapGesture().onEnded { _ in
-                                shoosedCard = "Westpac"
-                                withAnimation(.easeInOut(duration: 1)) {
-                                    self.showDetail.toggle()
-                                }
+                            
+                            ForEach(presenter.allAccounts.cards) { cardDetail in
+                                CardView(style: .light, name: cardDetail.name, balanceText: "Avaible balance", icon: cardDetail.icon, timeLeft: cardDetail.updated, balance: cardDetail.avaible.balance, spent: cardDetail.avaible.spent, income: cardDetail.avaible.income, onUpdate: {
+                                    print("Westpac update clicked")
+                                })
+                                .background(LinearGradient(gradient: Gradient(colors: [Color("CardSecondary"), Color("CardPrimary")]), startPoint: .leading, endPoint: .trailing))
+                                .cornerRadius(25).shadow(color: Color("CardShadow"), radius: 15)
+                                .gesture(
+                                    TapGesture().onEnded { _ in
+                                        shoosedCard = "Westpac"
+                                        withAnimation(.easeInOut(duration: 1)) {
+                                            self.showDetail.toggle()
+                                        }
+                                    }
+                                )
                             }
-                        )
+                            
+                        }.frame(width: 320, height: 250)
                         
-                        CardView(style: .light, name: "Commbank", balanceText: "Avaible balance", icon: "ic_commbank", timeLeft: 0, balance: 149, spent: 0, income: 149, onUpdate: {
-                            print("Commbank update clicked")
-                        })
-                        .background(LinearGradient(gradient: Gradient(colors: [Color("CardSecondary"), Color("CardPrimary")]), startPoint: .leading, endPoint: .trailing))
-                        .cornerRadius(25).shadow(color: Color("CardShadow"), radius: 15)
-                        .gesture(
-                            TapGesture().onEnded { _ in
-                                shoosedCard = "Commbank"
-                                withAnimation(.easeInOut(duration: 1)) {
-                                    self.showDetail.toggle()
-                                }
-                            }
-                        )
-                        
-                    }.frame(width: 320, height: 250)
+                    } else {
+                        VStack(alignment: .center) {
+                            ProgressView().progressViewStyle(CircularProgressViewStyle()).transformEffect(.init(scaleX: 1.5, y: 1.5))
+                        }.frame(width: 320, height: 250)
+                    }
                     
                     HStack(alignment: .center) {
                         Text("Money spent").font(.title3).fontWeight(.bold).foregroundColor(Color("TextHeader")).padding(.leading)
