@@ -37,6 +37,7 @@ struct OverviewView: View {
     
     @State private var showDetail = false
     @State private var shoosedCard = "All"
+    @ObservedObject var presenter = CardPresenter()
     
     var body: some View {
         Color("Background").edgesIgnoringSafeArea(.all).overlay(
@@ -48,6 +49,11 @@ struct OverviewView: View {
                     }.padding(.vertical, 25)
                     
                     PagesContainer(contentCount: 3) {
+                        
+                        // todo: this for test
+                        if (presenter.isLoadingData) {
+                            Text(presenter.allAccounts.cards[0].name)
+                        }
                         
                         CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: 705, spent: 300, income: 1005)
                         .background(LinearGradient(gradient: Gradient(colors: [Color("AllCardsSecondary"), Color("AllCardsPrimary")]), startPoint: .leading, endPoint: .trailing))
