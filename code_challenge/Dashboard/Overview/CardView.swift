@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// FIXME: Fixed animation
+
 // helper func
 func timeAgo(time: Int) -> String {
     var ret: String
@@ -42,7 +44,12 @@ struct CardView: View {
     var income: Int
     var onUpdate: ( () -> Void)?
     
+    @State private var a: Float = 0.0
+    @State private var b: Float = 0.0
+    
     var body: some View {
+        let cardWidth = Float(300)
+        let animDuration = 2.0
         VStack(alignment: .leading) {
             HStack {
                 if let icon = self.icon {
@@ -83,11 +90,11 @@ struct CardView: View {
             Spacer()
             HStack {
                 if (hasAllAccounts) {
-                    LinearGradient(gradient: Gradient(colors: [Color("CardSpent"), Color("CardSpent2")]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/).cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
-                    LinearGradient(gradient: Gradient(colors: [Color("CardIncome"), Color("CardIncome2")]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/).cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
+                    LinearGradient(gradient: Gradient(colors: [Color("CardSpent"), Color("CardSpent2")]), startPoint: .leading, endPoint: .trailing).cornerRadius(3.0).frame(width: CGFloat(a))
+                    LinearGradient(gradient: Gradient(colors: [Color("CardIncome"), Color("CardIncome2")]), startPoint: .leading, endPoint: .trailing).cornerRadius(3.0).frame(width: CGFloat(b))
                 } else {
-                    LinearGradient(gradient: Gradient(colors: [Color("CardIncome"), Color("CardIncome2")]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/).cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
-                    LinearGradient(gradient: Gradient(colors: [Color("CardSpent"), Color("CardSpent2")]), startPoint: /*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/, endPoint: /*@START_MENU_TOKEN@*/.trailing/*@END_MENU_TOKEN@*/).cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
+                    LinearGradient(gradient: Gradient(colors: [Color("CardIncome"), Color("CardIncome2")]), startPoint: .leading, endPoint: .trailing).cornerRadius(3.0).frame(width: CGFloat(b))
+                    LinearGradient(gradient: Gradient(colors: [Color("CardSpent"), Color("CardSpent2")]), startPoint: .leading, endPoint: .trailing).cornerRadius(3.0).frame(width: CGFloat(a))
                 }
             }
             .frame(height: 10)
@@ -113,6 +120,12 @@ struct CardView: View {
             }
             .padding(.all)
         }
-        .frame(width: 300, height: 180.0)
+        .frame(width: CGFloat(cardWidth), height: 180.0)
+        .onAppear {
+            withAnimation(.linear(duration: animDuration)) {
+                a = cardWidth * Float(spent)/Float(income) * Float(0.9)
+                b = cardWidth * Float(balance)/Float(income) * Float(0.9)
+            }
+        }
     }
 }
