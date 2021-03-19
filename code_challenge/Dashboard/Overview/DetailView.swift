@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct DetailView: View {
-    var name: String
-    var style: CardStyle
+    var cardDetail: CardDetail
+    
     var body: some View {
         Color("Background").edgesIgnoringSafeArea(.all).overlay(
             ScrollView([.vertical], showsIndicators: false) {
                 VStack {
-                    CardView(style: style, name: name, balanceText: "Avaible balance", icon: "ic_westpac", timeLeft: 5*3600, balance: 295, spent: 605, income: 900, onUpdate: {
-                        print("\(name) card update clicked")
+                    CardView(style: .light, name: cardDetail.name, balanceText: "Avaible balance", icon: cardDetail.icon, timeLeft: cardDetail.updated, balance: cardDetail.avaible.balance, spent: cardDetail.avaible.spent, income: cardDetail.avaible.income, onUpdate: {
+                        print("\(cardDetail.name) card update clicked")
                     })
                     Divider().frame(width: 250)
-                    CardView(style: style, name: "Choice", balance: 400, spent: 100, income: 500)
+                    CardView(style: .light, name: "Choice", balance: cardDetail.choice.balance, spent: cardDetail.choice.spent, income: cardDetail.choice.income)
                     Divider().frame(width: 250)
-                    CardView(style: style, name: "Savings", balance: 288, spent: 12, income: 300)
+                    CardView(style: .light, name: "Savings", balance: cardDetail.saving.balance, spent: cardDetail.saving.spent, income: cardDetail.saving.income)
                 }
-                .background(LinearGradient(gradient: Gradient(colors: self.style == .light ?
-                    [Color("CardSecondary"), Color("CardPrimary")] : [Color("AllCardsSecondary"), Color("AllCardsPrimary")]
-                ), startPoint: .leading, endPoint: .trailing))
+                .background(LinearGradient(gradient: Gradient(colors: [Color("CardSecondary"), Color("CardPrimary")]),
+                                           startPoint: .leading, endPoint: .trailing))
                 .cornerRadius(25)
                 .frame(width: 350)
                 .shadow(color: Color("CardShadow"), radius: 10)

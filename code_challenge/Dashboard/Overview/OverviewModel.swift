@@ -62,8 +62,8 @@ struct CardInteractor {
                         icon: "ic_commbank",
                         updated: 0,  // Date.now ?
                         avaible: Card(spent: 0, income: 149),
-                        choice: Card(spent: 100, income: 500),
-                        saving: Card(spent: 12, income: 300)
+                        choice: Card(spent: 100, income: 501),
+                        saving: Card(spent: 12, income: 301)
                     )]
                 ))
         }

@@ -74,7 +74,7 @@ struct OverviewView: View {
                                 .cornerRadius(25).shadow(color: Color("CardShadow"), radius: 15)
                                 .gesture(
                                     TapGesture().onEnded { _ in
-                                        shoosedCard = "Westpac"
+                                        shoosedCard = cardDetail.name
                                         withAnimation(.easeInOut(duration: 1)) {
                                             self.showDetail.toggle()
                                         }
@@ -109,7 +109,13 @@ struct OverviewView: View {
                 }
                 
                 if showDetail {
-                    DetailView(name: shoosedCard, style: shoosedCard == "All accounts" ? .blue : .light)
+                    if (shoosedCard == "All accounts") {
+                        DetailAllView(allAccounts: presenter.allAccounts)
+                    } else {
+                        if let card = presenter.allAccounts.cards.first(where: {$0.name == shoosedCard}) {
+                            DetailView(cardDetail: card)
+                        }
+                    }
                     VStack {
                         HStack {
                             Button {
