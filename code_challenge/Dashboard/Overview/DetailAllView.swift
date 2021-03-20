@@ -16,7 +16,7 @@ struct DetailAllView: View {
                 VStack {
                     // All accounts
                     if let totalBalance = allAccounts.totalBalance {
-                        CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: totalBalance.balance, spent: totalBalance.bills, income: totalBalance.cash)
+                        CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: totalBalance.balance, spent: totalBalance.bills, income: totalBalance.cash, withAnimate: false)
                         Divider().frame(width: 250)
                     }
                     

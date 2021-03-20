@@ -14,7 +14,7 @@ struct DetailView: View {
         Color("Background").edgesIgnoringSafeArea(.all).overlay(
             ScrollView([.vertical], showsIndicators: false) {
                 VStack {
-                    CardView(style: .light, name: cardDetail.name, balanceText: "Avaible balance", icon: cardDetail.icon, timeLeft: cardDetail.updated, balance: cardDetail.avaible.balance, spent: cardDetail.avaible.spent, income: cardDetail.avaible.income, onUpdate: {
+                    CardView(style: .light, name: cardDetail.name, balanceText: "Avaible balance", icon: cardDetail.icon, timeLeft: cardDetail.updated, balance: cardDetail.avaible.balance, spent: cardDetail.avaible.spent, income: cardDetail.avaible.income, withAnimate: false, onUpdate: {
                         print("\(cardDetail.name) card update clicked")
                     })
                     Divider().frame(width: 250)

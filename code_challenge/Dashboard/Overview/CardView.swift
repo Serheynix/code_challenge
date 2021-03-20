@@ -42,14 +42,15 @@ struct CardView: View {
     var balance: Int
     var spent: Int
     var income: Int
+    var withAnimate: Bool = true
     var onUpdate: ( () -> Void)?
+    var cardWidth = Float(300)
     
     @State private var a: Float = 0.0
     @State private var b: Float = 0.0
+    @State private var balanceStr: String = "0"
     
     var body: some View {
-        let cardWidth = Float(300)
-        let animDuration = 2.0
         VStack(alignment: .leading) {
             HStack {
                 if let icon = self.icon {
@@ -76,7 +77,7 @@ struct CardView: View {
             }
             .padding(.all)
             HStack {
-                Text("$\(balance)")
+                Text(balanceStr)
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(Color(style == .light ? "TextHeader" : "CardSecondary"))
@@ -122,9 +123,34 @@ struct CardView: View {
         }
         .frame(width: CGFloat(cardWidth), height: 180.0)
         .onAppear {
-            withAnimation(.linear(duration: animDuration)) {
-                a = cardWidth * Float(spent)/Float(income) * Float(0.9)
-                b = cardWidth * Float(balance)/Float(income) * Float(0.9)
+            if (withAnimate) {
+                // run animation with Timer, because SwiftUI Animation isn't work on Dashboard
+                setTimeAnimation(animDuration: 2.0, animFPS: 30) { progress in
+                    onProgress(progress)
+                }
+            } else {
+                onProgress(1)
+            }
+        }
+    }
+    
+    func onProgress(_ progress: Float) {
+        a = cardWidth * Float(spent)/Float(income) * Float(0.9) * progress
+        b = cardWidth * Float(balance)/Float(income) * Float(0.9) * progress
+        balanceStr = "$\(Int(Float(balance) * progress))"
+    }
+    
+    func setTimeAnimation(animDuration: Double = 1.0, animFPS: Int = 30, _ body: @escaping (_ progress: Float) -> Void) {
+        var counter: Int = 0
+        let stop: Int = Int(animDuration*Double(animFPS))
+        Timer.scheduledTimer(withTimeInterval: 1.0 / Double(animFPS), repeats: true) { timer in
+            counter += 1
+            let progress = Float(counter) / Float(stop)
+            
+            body(progress)
+
+            if (counter == stop) {
+                timer.invalidate()
             }
         }
     }
