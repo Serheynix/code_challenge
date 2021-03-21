@@ -37,6 +37,7 @@ struct OverviewView: View {
     
     @State private var showDetail = false
     @State private var shoosedCard = "All"
+    @State var animate = false
     @ObservedObject var presenter = CardPresenter()
     
     var body: some View {
@@ -59,9 +60,7 @@ struct OverviewView: View {
                                 .gesture(
                                     TapGesture().onEnded { _ in
                                         shoosedCard = "All accounts"
-                                        withAnimation(.easeInOut(duration: 1)) {
-                                            self.showDetail.toggle()
-                                        }
+                                        self.showDetail.toggle()
                                     }
                                 )
                             }
@@ -75,9 +74,7 @@ struct OverviewView: View {
                                 .gesture(
                                     TapGesture().onEnded { _ in
                                         shoosedCard = cardDetail.name
-                                        withAnimation(.easeInOut(duration: 1)) {
-                                            self.showDetail.toggle()
-                                        }
+                                        self.showDetail.toggle()
                                     }
                                 )
                             }
@@ -109,17 +106,61 @@ struct OverviewView: View {
                 }
                 
                 if showDetail {
-                    if (shoosedCard == "All accounts") {
-                        DetailAllView(allAccounts: presenter.allAccounts)
-                    } else {
-                        if let card = presenter.allAccounts.cards.first(where: {$0.name == shoosedCard}) {
-                            DetailView(cardDetail: card)
+                    Color("Background").edgesIgnoringSafeArea(.all).overlay(
+                        ScrollView([.vertical], showsIndicators: false) {
+                            let gradColor = shoosedCard == "All accounts" ?
+                                [Color("AllCardsSecondary"), Color("AllCardsPrimary")] :
+                                [Color("CardSecondary"), Color("CardPrimary")]
+                            VStack {
+                                if (shoosedCard == "All accounts") {
+                                    // All accounts
+                                    if let totalBalance = presenter.allAccounts.totalBalance {
+                                        CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: totalBalance.balance, spent: totalBalance.bills, income: totalBalance.cash, withAnimate: false)
+                                        Divider().frame(width: 250)
+                                    }
+                                    
+                                    if (animate) {
+                                        ForEach(presenter.allAccounts.cards) { cardDetail in
+                                            CardView(style: .blue, name: cardDetail.name, balanceText: "Avaible balance", icon: cardDetail.icon, timeLeft: cardDetail.updated, balance: cardDetail.avaible.balance, spent: cardDetail.avaible.spent, income: cardDetail.avaible.income, onUpdate: {
+                                                print("Westpac update clicked")
+                                            })
+                                            Divider().frame(width: 250)
+                                        }
+                                    }
+                                } else {
+                                    if let cardDetail = presenter.allAccounts.cards.first(where: {$0.name == shoosedCard}) {
+                                        CardView(style: .light, name: cardDetail.name, balanceText: "Avaible balance", icon: cardDetail.icon, timeLeft: cardDetail.updated, balance: cardDetail.avaible.balance, spent: cardDetail.avaible.spent, income: cardDetail.avaible.income, withAnimate: false, onUpdate: {
+                                            print("\(cardDetail.name) card update clicked")
+                                        })
+                                        if (animate) {
+                                            Divider().frame(width: 250)
+                                            CardView(style: .light, name: "Choice", balance: cardDetail.choice.balance, spent: cardDetail.choice.spent, income: cardDetail.choice.income)
+                                            Divider().frame(width: 250)
+                                            CardView(style: .light, name: "Savings", balance: cardDetail.saving.balance, spent: cardDetail.saving.spent, income: cardDetail.saving.income)
+                                        }
+                                    }
+                                }
+                            }
+                            .background(LinearGradient(gradient: Gradient(colors: gradColor),
+                                                       startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(25)
+                            .frame(width: 350)
+                            .shadow(color: Color("CardShadow"), radius: 10)
+                            .padding(.top, 70)
+                            .onAppear {
+                                withAnimation(.linear(duration: 1)) {
+                                    animate = true
+                                }
+                            }
                         }
-                    }
+                    )
                     VStack {
                         HStack {
                             Button {
-                                withAnimation(.easeInOut(duration: 1)) {
+                                withAnimation(.linear(duration: 1)) {
+                                    animate = false
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     self.showDetail.toggle()
                                 }
                             } label: {
