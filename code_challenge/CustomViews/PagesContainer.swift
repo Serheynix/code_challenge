@@ -9,13 +9,15 @@ import SwiftUI
 
 struct PagesContainer <Content : View> : View {
     let contentCount: Int
+    let selectedIndex: Int
     @State var index: Int = 0
     let content: Content
     @GestureState private var translation: CGFloat = 0
     
-    init(contentCount: Int, @ViewBuilder content: () -> Content) {
+    init(contentCount: Int, selectedIndex: Int = 0, @ViewBuilder content: () -> Content) {
         self.contentCount = contentCount
         self.content = content()
+        self.selectedIndex = selectedIndex
     }
     
     var body: some View {
@@ -58,6 +60,9 @@ struct PagesContainer <Content : View> : View {
                 }
                 .padding(.top, 25)
             }
+            .onAppear {
+                self.index = selectedIndex
+             }
         }
     }
 }

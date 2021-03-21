@@ -18,6 +18,7 @@
 		A580F9312603C72800E52A55 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A580F9302603C72800E52A55 /* CardView.swift */; };
 		A580F9672604B95600E52A55 /* OverviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A580F9662604B95600E52A55 /* OverviewModel.swift */; };
 		A580F97E2604C6C100E52A55 /* OverviewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A580F97D2604C6C100E52A55 /* OverviewPresenter.swift */; };
+		A580F9972607E7B500E52A55 /* Configs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A580F9962607E7B500E52A55 /* Configs.swift */; };
 		A5BD40B6260157C5005F5672 /* code_challengeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BD40B5260157C5005F5672 /* code_challengeApp.swift */; };
 		A5BD40B8260157C5005F5672 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BD40B7260157C5005F5672 /* DashboardView.swift */; };
 		A5BD40BA260157C7005F5672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5BD40B9260157C7005F5672 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 		A580F9302603C72800E52A55 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		A580F9662604B95600E52A55 /* OverviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewModel.swift; sourceTree = "<group>"; };
 		A580F97D2604C6C100E52A55 /* OverviewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewPresenter.swift; sourceTree = "<group>"; };
+		A580F9962607E7B500E52A55 /* Configs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configs.swift; sourceTree = "<group>"; };
 		A5BD40B2260157C5005F5672 /* code_challenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = code_challenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5BD40B5260157C5005F5672 /* code_challengeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = code_challengeApp.swift; sourceTree = "<group>"; };
 		A5BD40B7260157C5005F5672 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				A580F9302603C72800E52A55 /* CardView.swift */,
 				A580F9662604B95600E52A55 /* OverviewModel.swift */,
 				A580F97D2604C6C100E52A55 /* OverviewPresenter.swift */,
+				A580F9962607E7B500E52A55 /* Configs.swift */,
 			);
 			path = Overview;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5BD40B8260157C5005F5672 /* DashboardView.swift in Sources */,
+				A580F9972607E7B500E52A55 /* Configs.swift in Sources */,
 				A580F9212603C58C00E52A55 /* BudgetView.swift in Sources */,
 				A5BD40EC26026EA3005F5672 /* TabBarView.swift in Sources */,
 				A580F91C2603C57700E52A55 /* LendView.swift in Sources */,

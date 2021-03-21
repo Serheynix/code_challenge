@@ -14,6 +14,7 @@ final class CardPresenter: ObservableObject {
     
     private let interactor = CardInteractor()
     private var canselableSet: Set<AnyCancellable> = []
+    private var configManager = ConfigManager.shared
     
     init() {
         canselableSet.insert(interactor.loadCards().sink { err in
@@ -23,5 +24,21 @@ final class CardPresenter: ObservableObject {
             self.isLoadingData = true
             self.allAccounts = cards
         })
+    }
+    
+    func selectedIndex() -> Int {
+        if let cardIndex = allAccounts.cards.firstIndex(where: {$0.name == selectedAccount}) {
+            return cardIndex + 1
+        }
+        return 0
+    }
+ 
+    var selectedAccount: String {
+        get {
+            return configManager.selectedAccount
+        }
+        set {
+            configManager.selectedAccount = newValue
+        }
     }
 }

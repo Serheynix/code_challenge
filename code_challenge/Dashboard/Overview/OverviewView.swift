@@ -34,11 +34,10 @@ struct OverviewView: View {
     private static let onSelect = { key in
         print(key)
     }
-    
-    @State private var showDetail = false
-    @State private var shoosedCard = "All"
-    @State var animate = false
     @ObservedObject var presenter = CardPresenter()
+    @State private var showDetail = false
+    @State private var shoosedCard = "All accounts"
+    @State var animate = false
     
     var body: some View {
         Color("Background").edgesIgnoringSafeArea(.all).overlay(
@@ -51,7 +50,7 @@ struct OverviewView: View {
                     
                     if (presenter.isLoadingData) {
                     
-                        PagesContainer(contentCount: presenter.allAccounts.cards.count + 1) {
+                        PagesContainer(contentCount: presenter.allAccounts.cards.count + 1, selectedIndex: presenter.selectedIndex()) {
                             // All accounts
                             if let totalBalance = presenter.allAccounts.totalBalance {
                                 CardView(style: .blue, hasAllAccounts: true, name: "All accounts", balanceText: "Balance after bills", balance: totalBalance.balance, spent: totalBalance.bills, income: totalBalance.cash)
@@ -60,6 +59,7 @@ struct OverviewView: View {
                                 .gesture(
                                     TapGesture().onEnded { _ in
                                         shoosedCard = "All accounts"
+                                        presenter.selectedAccount = shoosedCard
                                         self.showDetail.toggle()
                                     }
                                 )
@@ -74,12 +74,19 @@ struct OverviewView: View {
                                 .gesture(
                                     TapGesture().onEnded { _ in
                                         shoosedCard = cardDetail.name
+                                        presenter.selectedAccount = shoosedCard
                                         self.showDetail.toggle()
                                     }
                                 )
                             }
                             
                         }.frame(width: 320, height: 250)
+                        .onAppear {
+                            if (presenter.selectedAccount != "") {
+                                shoosedCard = presenter.selectedAccount
+                                self.showDetail.toggle()
+                            }
+                        }
                         
                     } else {
                         VStack(alignment: .center) {
